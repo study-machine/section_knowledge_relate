@@ -98,6 +98,14 @@ class Section(BaseModel):
             ) for d in res
         ]
 
+    def write_relate_section_knowledge(self, k_id):
+        assert self.CourseSectionID
+        sql = """
+        INSERT INTO edu_relate_coursesection_knowledge (CourseSectionID,KnowID) 
+        VALUES ({CourseSectionID},{KnowID});
+        """.format(CourseSectionID=self.CourseSectionID, KnowID=k_id)
+        self.insert(sql)
+
 
 class QuestionNew(BaseModel):
     def __init__(self, **kwargs):
@@ -128,7 +136,7 @@ class QuestionNew(BaseModel):
         from wx_edu_questions_new as q 
         inner join edu_relate_courseassistquestion as r
         on q.QuestionID=r.QuestionID
-        where r.CourseSectionID=353202;
+        where r.CourseSectionID={};
         """.format(s_id)
         res = cls.select(sql)
         return [
@@ -153,33 +161,46 @@ class QuestionNew(BaseModel):
 
 class Knowledge(BaseModel):
     def __init__(self, **kwargs):
-
+        KnowID = IntegerField()
+        KnowName = StringField()
+        Summary = StringField()
+        Level = IntegerField()
+        ParentID = IntegerField()
+        OrderNum = IntegerField()
+        Subject = IntegerField()
+        KnowOrder = IntegerField()
+        QuestionCount = IntegerField()
+        IsDelete = IntegerField()
+        Last = IntegerField()
+        QuestionType = IntegerField()
         super(Knowledge, self).__init__(**kwargs)
 
     def __repr__(self):
-        return '<知识点 id:{},name:{}>'.format(self.QuestionID, self.Question)
+        return '<知识点 id:{},name:{}>'.format(self.KnowID, self.KnowName)
 
     @classmethod
-    def get_knowledge_by_q_id(cls, s_id):
+    def get_knowledge_by_q_id(cls, q_id):
         sql = """
-        
-        """.format(s_id)
+        select  k.KnowID, k.KnowName, k.Summary, k.Level, k.ParentID, k.OrderNum, k.Subject,
+        k.KnowOrder, k.QuestionCount, k.IsDelete, k.Last, k.QuestionType 
+        from wx_edu_knowledge as k 
+        inner join edu_relate_knowledgequestion as r on k.KnowID=r.KnowID 
+        where QuestionID={} and IsDelete=0;
+        """.format(q_id)
         res = cls.select(sql)
         return [
             cls(
-                QuestionID=d['QuestionID'],
-                Question=d['Question'],
-                QuestionType=d['QuestionType'],
-                AddTime=d['AddTime'],
-                RightAnswer=d['RightAnswer'],
-                AnswerExplain=d['AnswerExplain'],
-                Options=d['Options'],
+                KnowID=d['KnowID'],
+                KnowName=d['KnowName'],
+                Summary=d['Summary'],
                 Level=d['Level'],
-                IsPublic=d['IsPublic'],
-                Status=d['Status'],
-                QuestionAnalyze=d['QuestionAnalyze'],
-                Grade=d['Grade'],
+                ParentID=d['ParentID'],
+                OrderNum=d['OrderNum'],
                 Subject=d['Subject'],
-                ShortQuestion=d['ShortQuestion']
+                KnowOrder=d['KnowOrder'],
+                QuestionCount=d['QuestionCount'],
+                IsDelete=d['IsDelete'],
+                Last=d['Last'],
+                QuestionType=d['QuestionType']
             ) for d in res
         ]

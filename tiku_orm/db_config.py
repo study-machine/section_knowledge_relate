@@ -32,6 +32,7 @@ class DatabaseConfig(object):
         'password': 'qaOnly!@#',
         'db': 'tiku',
         'charset': 'utf8mb4',
+        'use_unicode': False,
         'cursorclass': pymysql.cursors.DictCursor,
     }
 
@@ -43,6 +44,7 @@ class DatabaseConfig(object):
         'password': 'asd123',
         'db': 'knowboxstore4',
         'charset': 'utf8mb4',
+        'use_unicode': False,
         'cursorclass': pymysql.cursors.DictCursor,
     }
     # 速算题库总库线上库
@@ -53,6 +55,7 @@ class DatabaseConfig(object):
         'password': 'wangxy112',
         'db': 'knowboxstore',
         'charset': 'utf8mb4',
+        'use_unicode': False,
         'cursorclass': pymysql.cursors.DictCursor,
     }
     # 线上从库
@@ -63,5 +66,6 @@ class DatabaseConfig(object):
         'password': 'liyj123',
         'db': 'tiku',
         'charset': 'utf8mb4',
+        'use_unicode': False,
         'cursorclass': pymysql.cursors.DictCursor,
     }

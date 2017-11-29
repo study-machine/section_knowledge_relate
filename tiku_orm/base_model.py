@@ -2,8 +2,11 @@
 import pymysql
 from db_config import DatabaseConfig
 
-db_config_read = DatabaseConfig.QA_db
-db_config_write = DatabaseConfig.QA_db
+# db_config_read = DatabaseConfig.QA_db
+# db_config_write = DatabaseConfig.QA_db
+
+db_config_read = DatabaseConfig.online_susuan_db
+db_config_write = DatabaseConfig.online_susuan_db
 
 
 class BaseModel(object):
@@ -11,7 +14,6 @@ class BaseModel(object):
     conn_read = pymysql.connect(**db_config_read)
     # 写库的连接
     conn_write = pymysql.connect(**db_config_write)
-    # write_db_type = 'zongku'
     write_db_type = ''
 
     def __init__(self, **kwargs):
